@@ -2,6 +2,7 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import taskRouter from './router/taskRouter';
 import path from 'path';
+import cors from 'cors';
 
 // main file, intializes server connection, also any type of config
 // also has all the routers
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // serve static files
 app.use(express.static(path.resolve('../frontend/dist/assets')));

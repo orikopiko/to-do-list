@@ -129,12 +129,15 @@ const TASKS: Task[] = [
 const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  console.log('App => tasks:', tasks);
-
   useEffect(() => {
     // fetch call to firebase
-    TASKS.forEach((task) => setTasks([...tasks, task]));
+    // TASKS.forEach((task) => setTasks([...tasks, task]));
+    fetch('http://localhost:8000/task/all')
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
   }, []);
+
+  console.log('App => tasks:', tasks);
 
   return (
     <div>
