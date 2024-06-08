@@ -3,19 +3,18 @@
     "version": "1.0.0",
     "description": "Monorepo for To-Do List application with React frontend and Node.js backend",
     "scripts": {
-      "postinstall": "npm install --prefix packages/frontend && npm install --prefix packages/backend",
-      "build": "npm run build --prefix packages/frontend && npm run build --prefix packages/backend",
-      "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
-      "start:frontend": "npm start --prefix packages/frontend",
-      "start:backend": "npm start --prefix packages/backend",
-      "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-      "dev:frontend": "npm run dev --prefix packages/frontend",
-      "dev:backend": "npm run dev --prefix packages/backend"
+        "postinstall": "npm install --prefix packages/frontend && npm install --prefix packages/backend",
+        "build": "npm run build --prefix packages/frontend && npm run build --prefix packages/backend",
+        "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+        "start:frontend": "npm start --prefix packages/frontend",
+        "start:backend": "npm start --prefix packages/backend",
+        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+        "dev:frontend": "npm run dev --prefix packages/frontend",
+        "dev:backend": "npm run dev --prefix packages/backend"
     },
     "author": "Orikopiko",
     "license": "ISC",
     "devDependencies": {
-      "concurrently": "^7.0.0"
+        "concurrently": "^7.0.0"
     }
-  }
-  
+}
