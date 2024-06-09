@@ -5,6 +5,10 @@ import { TaskModel } from 'src/model/taskModel';
 type TaskController = {
   getTask: (req: Request, res: Response, next: NextFunction) => void;
   listAllTasks: (req: Request, res: Response, next: NextFunction) => void;
+  createTask: (req: Request, res: Response, next: NextFunction) => void;
+  deleteTask: (req: Request, res: Response, next: NextFunction) => void;
+  updateTask: (req: Request, res: Response, next: NextFunction) => void;
+  deleteAllTasks: (req: Request, res: Response, next: NextFunction) => void;
 };
 
 const taskController: TaskController = {
@@ -29,7 +33,6 @@ const taskController: TaskController = {
   },
   listAllTasks: async (req, res, next) => {
     try {
-      console.log('hello');
       const tasks = await TaskModel.getTasks();
       res.locals.tasks = tasks;
       return next();
@@ -37,6 +40,48 @@ const taskController: TaskController = {
       return next();
     }
   },
+  createTask: async (req, res, next) => {
+    try {
+      const data = req.body;
+      console.log(data);
+      await TaskModel.createTask(data);
+      res.locals.task = data;
+      return next();
+    }
+    catch (error) {
+      return next();
+    }
+  },
+  deleteTask: async (req, res, next) => {
+    try {
+      const taskId = req.params.taskId;
+      await TaskModel.deleteTask(taskId);
+      return next();
+    }
+    catch (error) {
+      return next();
+    }
+  },
+  updateTask: async (req, res, next) => {
+    try {
+      const taskId = req.params.taskId;
+      const description = req.body;
+      await TaskModel.updateTask(taskId, description);
+      return next();
+    }
+    catch (error) {
+      return next();
+    }
+  },
+  deleteAllTasks: async (req, res, next) => {
+    try {
+      await TaskModel.deleteAllTasks();
+      return next();
+    }
+    catch (error) {
+      return next();
+    }
+  }
 };
 
 export default taskController;

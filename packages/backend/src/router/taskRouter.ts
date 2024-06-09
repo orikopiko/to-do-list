@@ -13,9 +13,12 @@ taskRouter.get('/all', taskController.listAllTasks, (req, res) =>
 taskRouter.get('/:taskId', taskController.getTask, (_, res) =>
   res.status(200).json(res.locals.task)
 );
-// create a task
-// update a task
-// delete a task
 // delete all tasks
-
+taskRouter.delete('/delete/all', taskController.deleteAllTasks, (req, res) => res.status(200).json("Deleted all tasks successfully."));
+// delete a task
+taskRouter.delete('/delete/:taskId', taskController.deleteTask, (req, res) => res.status(200).json("Deleted task successfully."));
+// create a task
+taskRouter.post('/new', taskController.createTask, (req, res) => res.status(200).json(` "${res.locals.task.description}" task created successfully.`))
+// update a task
+taskRouter.post('/update/:taskId', taskController.updateTask, (req, res) => res.status(200).json(`Task updated successfully.`))
 export default taskRouter;

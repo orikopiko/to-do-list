@@ -61,11 +61,17 @@ const deleteTask = async (taskId: string): Promise<void> => {
   await deleteDoc(taskDoc);
 };
 
+const deleteAllTasks = async (): Promise<void> => {
+  const taskList = await getTasks();
+  taskList.forEach(async (task) => await deleteTask(task.id));
+}
+
 export const TaskModel = {
   getATask,
   createTask,
   getTasks,
   updateTask,
   deleteTask,
+  deleteAllTasks,
 };
 export type { Task };
