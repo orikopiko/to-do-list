@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { TaskCreator } from './TaskCreator';
+import { TaskList } from './TaskList';
+import { CompletedTasksToggle } from './CompletedTasksToggle';
 
 // type Task = {
 //   id: number;
@@ -111,7 +113,7 @@ import { TaskCreator } from './TaskCreator';
 // }
 
 export type Task = {
-  id: number;
+  id: string,
   description: string;
   isCompleted: boolean;
 };
@@ -120,30 +122,47 @@ export type Task = {
 //   task: Task;
 // };
 
-const TASKS: Task[] = [
-  { id: 1, description: 'write to-do list', isCompleted: false },
-  { id: 2, description: "watch eden's tiktoks", isCompleted: false },
-  { id: 3, description: 'go to gym', isCompleted: false },
-];
+// const TASKS: Task[] = [
+//   { description: 'write to-do list', isCompleted: false },
+//   { description: "watch eden's tiktoks", isCompleted: false },
+//   { description: 'go to gym', isCompleted: false },
+// ];
 
 const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskType, setTaskType] = useState<boolean>(false);
+  const [tasksToShow, setTasksToShow] = useState<Task[]>(tasks);
+  console.log('Inside App');
 
   useEffect(() => {
     // fetch call to firebase
     // TASKS.forEach((task) => setTasks([...tasks, task]));
-    fetch('http://localhost:8000/task/all')
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/task/all');
+        const data = await response.json();
+        setTasks(data);
+        setTasksToShow(data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+    fetchTasks();
+
+    // fetch('http://localhost:8000/task/all')
+    //   .then((res) => res.json())
+    //   .then((data) => setTasks(data));
+    // setTasksToShow(tasks);
   }, []);
 
   console.log('App => tasks:', tasks);
 
   return (
-    <div>
+    <div className='app-container'>
       <h1>To Do List</h1>
       <TaskCreator currentListOfTasks={tasks} setTasks={setTasks} />
-      <div>{/**Task list */}</div>
+      <div><TaskList currentListOfTasks={tasks} setTasks={setTasks} taskType={taskType} tasksToShow={tasksToShow} setTasksToShow={setTasksToShow} /></div>
+      <div><CompletedTasksToggle taskType={taskType} setTaskType={setTaskType} /></div>
     </div>
   );
 };

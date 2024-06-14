@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Task } from './App';
-
 type Props = {
   currentListOfTasks: Task[];
   setTasks: Dispatch<SetStateAction<Task[]>>;
@@ -17,16 +16,24 @@ export const TaskCreator = React.memo(
     }, []);
 
     const createTask = useCallback(
-      (description: string) => {
+      async (description: string) => {
         // make post request, get task, and populate with fields you got from backend
+        const data = { description, isCompleted: false };
+        const response = await fetch('http://localhost:8000/task/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-        const task: Task = {
-          id: currentListOfTasks.length,
-          description,
-          isCompleted: false,
-        };
+        const result = await response.json();
+        const newTask: Task = result.task;
 
-        setTasks([...currentListOfTasks, task]);
+        setTasks([...currentListOfTasks, newTask]);
         setTaskDescription('');
       },
       [currentListOfTasks]
@@ -44,7 +51,7 @@ export const TaskCreator = React.memo(
           value={taskDescription}
           placeholder='Add a task...'
         />
-        <button onClick={handleButtonClick}>click me</button>
+        <button onClick={handleButtonClick}>Add Task!</button>
       </div>
     );
   }

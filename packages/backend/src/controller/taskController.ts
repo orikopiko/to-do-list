@@ -42,11 +42,18 @@ const taskController: TaskController = {
   },
   createTask: async (req, res, next) => {
     try {
+      console.log('Create Task:');
       const data = req.body;
-      console.log(data);
-      await TaskModel.createTask(data);
-      res.locals.task = data;
-      return next();
+      console.log('Received data,', data);
+      const id = await TaskModel.createTask(data);
+      const newTask = {
+        id: id,
+        description: data.description,
+        isCompleted: data.isCompleted
+      };
+      console.log('new task:', newTask);
+      res.status(201).json({ message: 'Task created successfully. ', task: newTask });
+      // return next();
     }
     catch (error) {
       return next();

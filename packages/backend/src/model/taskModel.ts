@@ -21,8 +21,9 @@ interface Task {
 const tasksCollection = collection(db, 'tasks');
 
 // Create a new task
-const createTask = async (task: Task): Promise<void> => {
-  await addDoc(tasksCollection, task);
+const createTask = async (task: Task) => {
+  const taskRef = await addDoc(tasksCollection, task);
+  return taskRef.id;
 };
 
 const getATask = async (taskId: string) => {
